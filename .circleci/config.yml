@@ -15,6 +15,11 @@ jobs:
           command: npm install
           working_directory: client
 
+      - run:
+          name: Unit Test
+          command: npm run test:unit
+          working_directory: client
+
 workflows:
   build:
     jobs:
