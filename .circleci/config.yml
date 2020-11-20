@@ -14,10 +14,21 @@ jobs:
 
       - checkout
 
+      - restore_cache:
+          keys:
+            - circleci-demo-{{ checksum "client/package-lock.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - circleci-demo-
+
       - run:
           name: Install dependencies
           command: npm install
           working_directory: client
+
+      - save_cache:
+          paths:
+            - client/node_modules
+          key: circleci-demo-{{ checksum "client/package-lock.json" }}
 
       - run:
           name: Build
@@ -27,10 +38,18 @@ jobs:
   test:
     docker:
       - image: circleci/node:12-buster-browsers
+
     working_directory: ~/repo
 
     steps:
       - checkout
+
+      - restore_cache:
+          keys:
+            - circleci-demo-{{ checksum "client/package-lock.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - circleci-demo-
+
       - run:
           name: Unit Test
           command: npm run test:unit
