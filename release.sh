@@ -6,7 +6,7 @@ set -eo
 RELEASE_PATTERN="^[0-9]+.([0-9]+|x)(.[0-9]+|.x)?$" # Matches patterns like 1.x, 1.1.x, 23.x, 23.212.x, etc.
 
 if [[ "${CIRCLE_BRANCH}" =~ ${RELEASE_PATTERN} ]]; then
-#  VERSION=$(npm run version --prefix client --silent)
+  VERSION=$(npm run version --prefix client --silent)
 #  echo ${VERSION}
 #
 #  echo "Configurate git"
