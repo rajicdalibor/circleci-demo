@@ -38,6 +38,10 @@ jobs:
           name: Release
           command: bash release.sh
 
+      - run:
+          name: Test
+          command: echo "test"
+
 workflows:
   build:
     jobs:
