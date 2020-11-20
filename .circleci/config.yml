@@ -1,13 +1,88 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
-# Use a package of configuration called an orb.
-orbs:
-  # Declare a dependency on the welcome-orb
-  welcome: circleci/welcome-orb@0.4.1
-# Orchestrate or schedule a set of jobs
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node:12-buster-browsers
+
+    working_directory: ~/repo
+
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "95:c6:ea:61:74:37:85:47:d3:e3:4f:15:87:5e:3f:74"
+
+      - checkout
+
+      - restore_cache:
+          keys:
+            - circleci-demo-{{ checksum "client/package-lock.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - circleci-demo-
+
+      - run:
+          name: Install dependencies
+          command: npm install
+          working_directory: client
+
+      - save_cache:
+          paths:
+            - client/node_modules
+          key: circleci-demo-{{ checksum "client/package-lock.json" }}
+
+      - run:
+          name: Build
+          command: npm run build
+          working_directory: client
+
+  test:
+    docker:
+      - image: circleci/node:12-buster-browsers
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - circleci-demo-{{ checksum "client/package-lock.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - circleci-demo-
+
+      - run:
+          name: Unit Test
+          command: npm run test:unit
+          working_directory: client
+
+  release:
+    docker:
+      - image: circleci/node:12-buster-browsers
+
+    working_directory: ~/repo
+
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "95:c6:ea:61:74:37:85:47:d3:e3:4f:15:87:5e:3f:74"
+
+      - checkout
+
+      - run:
+          name: Prepare Release
+          command: bash prepare-release.sh
+
+      - run:
+          name: Release
+          command: bash release.sh
+
 workflows:
-  # Name the workflow "welcome"
-  welcome:
-    # Run the welcome/run job in its own container
+  build:
     jobs:
-      - welcome/run
+      - build
+      - test:
+          requires:
+            - build
+      - release:
+          requires:
+            - test
