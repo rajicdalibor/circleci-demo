@@ -13,7 +13,7 @@ if [[ "${CIRCLE_BRANCH}" =~ ${RELEASE_PATTERN} ]]; then
 #  git config user.email "circleci@onstructive.ch"
 #  git config user.name "RELEASE"
 #
-#  echo "Git commit release '${VERSION}'"
+  echo "Git commit release '${VERSION}'"
 #  git add client/package.json client/package-lock.json
 #  git commit -m "[skip ci] release '${VERSION}'"
 #  git tag ${VERSION}
