@@ -36,6 +36,7 @@ jobs:
       - run:
           name: Release
           command: npm run version
+          working_directory: client
 
 workflows:
   build:
