@@ -15,10 +15,6 @@ jobs:
       - checkout
 
       - run:
-          name: Prepare Release
-          command: bash prepare-release.sh
-
-      - run:
           name: Install dependencies
           command: npm install
           working_directory: client
@@ -34,15 +30,31 @@ jobs:
           command: npm run build
           working_directory: client
 
+  release:
+    docker:
+      - image: circleci/node:12-buster-browsers
+
+    working_directory: ~/repo
+
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "95:c6:ea:61:74:37:85:47:d3:e3:4f:15:87:5e:3f:74"
+
+      - checkout
+      -
+      - run:
+          name: Prepare Release
+          command: bash prepare-release.sh
+
       - run:
           name: Release
           command: bash release.sh
-
-      - run:
-          name: Test
-          command: echo "test"
 
 workflows:
   build:
     jobs:
       - build
+      - release:
+          requires:
+            - build
