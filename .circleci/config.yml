@@ -42,7 +42,7 @@ jobs:
             - "95:c6:ea:61:74:37:85:47:d3:e3:4f:15:87:5e:3f:74"
 
       - checkout
-      -
+
       - run:
           name: Prepare Release
           command: bash prepare-release.sh
