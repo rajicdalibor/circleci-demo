@@ -21,6 +21,8 @@ if [[ "${CIRCLE_BRANCH}" =~ ${RELEASE_PATTERN} ]]; then
 #  git push --set-upstream origin $CIRCLE_BRANCH
 #  git push origin --tags
   npm run version --prefix client
+  echo "Git commit release '${VERSION}'"
+
   echo "Releasing"
 else
  echo "Skip releasing"
