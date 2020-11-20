@@ -35,8 +35,7 @@ jobs:
 
       - run:
           name: Release
-          command: npm run version
-          working_directory: client
+          command: bash release.sh
 
 workflows:
   build:
