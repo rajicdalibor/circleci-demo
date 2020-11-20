@@ -11,6 +11,10 @@ jobs:
       - checkout
 
       - run:
+          name: Prepare Release
+          command: bash prepare-release.sh
+
+      - run:
           name: Install dependencies
           command: npm install
           working_directory: client
@@ -18,6 +22,12 @@ jobs:
       - run:
           name: Unit Test
           command: npm run test:unit
+          working_directory: client
+
+
+      - run:
+          name: Build
+          command: npm run build
           working_directory: client
 
 workflows:
