@@ -20,11 +20,6 @@ jobs:
           working_directory: client
 
       - run:
-          name: Unit Test
-          command: npm run test:unit
-          working_directory: client
-
-      - run:
           name: Build
           command: npm run build
           working_directory: client
