@@ -27,6 +27,9 @@ jobs:
   test:
     docker:
       - image: circleci/node:12-buster-browsers
+    working_directory: ~/repo
+
+    steps:
       - checkout
       - run:
           name: Unit Test
