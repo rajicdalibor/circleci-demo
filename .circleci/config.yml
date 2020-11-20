@@ -24,10 +24,18 @@ jobs:
           command: npm run test:unit
           working_directory: client
 
-
       - run:
           name: Build
           command: npm run build
+          working_directory: client
+
+  test:
+    docker:
+      - image: circleci/node:12-buster-browsers
+      - checkout
+      - run:
+          name: Unit Test
+          command: npm run test:unit
           working_directory: client
 
   release:
@@ -55,6 +63,9 @@ workflows:
   build:
     jobs:
       - build
-      - release:
+      - test:
           requires:
             - build
+      - release:
+          requires:
+            - test
